@@ -11,6 +11,12 @@ app.config['SECRET_KEY'] = "IAMCOOL1234"
 
 @app.route("/", methods=["GET", "POST"])
 def convert():
+    """
+    Render the base HTML template if the HTTP method is GET, or process
+    a conversion request if the HTTP method is POST. If a conversion request
+    is made, store the conversion parameters in the session object and redirect
+    to the "/rate-response" route.
+    """
 
     if request.method == "POST":
         convert_from = request.form["convert_from"]
@@ -27,6 +33,13 @@ def convert():
 
 @app.route("/rate-response")
 def rate_response():
+    """
+    Retrieve the stored conversion parameters from the session object and use
+    them to compute the conversion rate. If there are any error messages, redirect
+    the user to the base route ("/") and display the messages. Otherwise, remove
+    the stored conversion parameters from the session object and render the base
+    HTML template with the conversion rate.
+    """
 
     convert_from = session.get("convert_from")
     convert_to = session.get("convert_to")
